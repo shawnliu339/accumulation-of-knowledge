@@ -36,7 +36,7 @@ Java虚拟机涉及以下几个分区，列表的分层变现了各区域在Java
 需要注意的是，栈中只存储对象的引用，实际的对象实例存储于堆中。栈中的变量的生命周期与调用方法相同，方法结束后，栈中变量将被立即释放。
 
 ### <a name="heap"></a>堆
-在Java虚拟机中，所有的线程都共享一个堆，每一个虚拟机有自己独立的堆。堆用于存储对象的实例，以及数组。堆中不再使用的数据，由垃圾回收机制（Garage-collector）自动释放。
+在Java虚拟机中，所有的线程都共享一个堆，每一个虚拟机有自己独立的堆。堆用于存储对象的实例，以及数组。堆中不再使用的数据，由垃圾回收机制（Garbage-collector）自动释放。
 
 ### <a name="method-area"></a>方法区
 方法区实际为堆的一块逻辑分区，用于存储编译后的代码，类的信息，方法的信息等。
@@ -58,12 +58,12 @@ public static void main(String[] args) {
 }
 ```
 
-上述代码，编译期间既可以确定`“hello”，“hel”，”lo“`，因此以上字符串常量被放入常量池。变量`hello1, hel, lo`都直接通过常量池获得初始值，而`hello2`是通过关键字`new`初始化，因此，值新建于堆，而非来源于常量池中。  
+上述代码，编译期间即可以确定`“hello”, “hel”, ”lo“, "hel"+"lo"`四个字符串常量，因此他们被放入常量池。变量`hello1, hel, lo`都是直接通过常量池获得初始值，而`hello2`是通过关键字`new`初始化，因此，值新建于堆，而非来源于常量池中。  
 因此，`hello1 == "hello"`为`true`，`hello2 == "hello"`为`false`。  
 由于`hel + lo == "hello"`为变量相加，在编译期间无法确定类型，且运行期间Java虚拟机会开辟一个新的临时空间存储`hel`和`lo`的运算结果，因此，`hel + lo == "hello"`为`false`，`"hel" + "lo" == "hello"`为`true`。  
 
 ## <a name="process"></a>堆与栈中数据的存储及释放过程
-可参考网页很多不再赘述。参考网页：http://blog.csdn.net/shimiso/article/details/8595564
+可参考网页很多，不再赘述。参考网页：http://blog.csdn.net/shimiso/article/details/8595564
 
 ## <a name="reference"></a>参考
 [1] Java Virtual Machine Specification, Chapter2: https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-2.html#jvms-2.5  
