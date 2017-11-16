@@ -58,7 +58,7 @@ public static void main(String[] args) {
 }
 ```
 
-上述代码，编译期间即可以确定`“hello”, “hel”, ”lo“, "hel"+"lo"`四个字符串常量，因此他们被放入常量池。变量`hello1, hel, lo`都是直接通过常量池获得初始值，而`hello2`是通过关键字`new`初始化，因此，值新建于堆，而非来源于常量池中。  
+上述代码，编译期间即可以确定`"hello", "hel", "lo", "hel"+"lo"`四个字符串常量，因此它们被放入常量池。变量`hello1, hel, lo`都是直接通过常量池获得初始值，而`hello2`是通过关键字`new`初始化，因此，值新建于堆，而非来源于常量池中。  
 因此，`hello1 == "hello"`为`true`，`hello2 == "hello"`为`false`。  
 由于`hel + lo == "hello"`为变量相加，在编译期间无法确定类型，且运行期间Java虚拟机会开辟一个新的临时空间存储`hel`和`lo`的运算结果，因此，`hel + lo == "hello"`为`false`，`"hel" + "lo" == "hello"`为`true`。  
 
@@ -66,5 +66,5 @@ public static void main(String[] args) {
 可参考网页很多，不再赘述。参考网页：http://blog.csdn.net/shimiso/article/details/8595564
 
 ## <a name="reference"></a>参考
-[1] Java Virtual Machine Specification, Chapter2: https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-2.html#jvms-2.5  
+[1] Java Virtual Machine Specification, Chapter2: https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-2.html  
 [2] Java内存分配研究：http://www.blogjava.net/Jack2007/archive/2008/05/21/202018.html  
