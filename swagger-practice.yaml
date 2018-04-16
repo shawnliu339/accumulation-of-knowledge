@@ -1,3 +1,5 @@
+# 该文档用于学习Swagger2.0。基本尝试了Open API 2.0标准中的多数写法。
+# 下一步将尝试自定义Swagger UI，例如，展示默认API页面和添加模版。
 swagger: '2.0'
 info:
   description: チケット受け渡しのシステムに関するAPIの説明
@@ -11,11 +13,12 @@ info:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
 
-# host: localhost:3000
-# basePath: /api/v1
+host: 0.0.0.0:3000
+basePath: /api/v1
 
 schemes:
  - https
+ - http
 
 # tags are used for organizing operations
 tags:
@@ -24,7 +27,7 @@ tags:
 - name: tickets
   description: チケットに関するAPI
 
-# Global MIME type  
+# Global MIME type
 consumes:
   - application/json
 produces:
@@ -46,7 +49,7 @@ paths:
             type: array
             items:
               $ref: '#/definitions/User'
-        
+
     post:
       tags:
       - users
@@ -74,7 +77,7 @@ paths:
           description: invalid input, object invalid
         409:
           description: an existing item already exists
-          
+
   /users/{user_id}:
     get:
       tags:
@@ -94,7 +97,7 @@ paths:
           description: successful operation
           schema:
             $ref: '#/definitions/User'
-            
+
   /users/{user_id}/tickets:
     get:
       tags:
@@ -116,7 +119,7 @@ paths:
             type: array
             items:
               $ref: '#/definitions/Ticket'
-              
+
   /users/{user_id}/transfer:
     post:
       tags:
@@ -155,7 +158,7 @@ paths:
           description: successful operation
           schema:
             $ref: '#/definitions/Transfer'
-              
+
   /tickets:
     get:
       tags:
@@ -171,7 +174,7 @@ paths:
             type: array
             items:
               $ref: '#/definitions/Ticket'
-              
+
     post:
       tags:
       - tickets
@@ -200,7 +203,7 @@ paths:
           description: successful operation
           schema:
             $ref: '#/definitions/Ticket'
-              
+
   /tickets/{ticket_id}:
     get:
       tags:
@@ -220,7 +223,7 @@ paths:
           description: successful operation
           schema:
             $ref: '#/definitions/Ticket'
-            
+
     delete:
       tags:
       - tickets
@@ -237,7 +240,7 @@ paths:
           description: Invalid ID supplied
         404:
           description: Ticket not found
-            
+
   /tickets/{ticket_id}/history:
     get:
       tags:
@@ -262,9 +265,9 @@ paths:
                 $ref: '#/definitions/Ticket'
               transfers:
                 type: array
-                items: 
+                items:
                   $ref: '#/definitions/Transfer'
-        
+
 definitions:
   User:
     type: object
@@ -292,7 +295,7 @@ definitions:
         type: string
         format: date
         example: 2018-04-15 03:21:52 UTC
-        
+
   Ticket:
     type: object
     required:
@@ -327,7 +330,7 @@ definitions:
       status:
         type: integer
         example: 1
-        
+
   Transfer:
     type: object
     required:
@@ -358,6 +361,3 @@ definitions:
         type: string
         format: date
         example: 2018-04-15 03:21:52 UTC
-# Added by API Auto Mocking Plugin
-host: virtserver.swaggerhub.com
-basePath: /Shearan/test/1.0.0
