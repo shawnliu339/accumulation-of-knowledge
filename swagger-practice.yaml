@@ -2,12 +2,12 @@
 # 下一步将尝试自定义Swagger UI，例如，展示默认API页面和添加模版。
 swagger: '2.0'
 info:
-  description: チケット受け渡しのシステムに関するAPIの説明
+  description: 票务转交让系统API说明
   version: 1.0.0
-  title: チケットの受け渡しシステム
+  title: 票务转让系统
   # put the contact info for your development or API team
   contact:
-    email: you@your-company.com
+    email: sranliu339@gmail.com
 
   license:
     name: Apache 2.0
@@ -23,9 +23,9 @@ schemes:
 # tags are used for organizing operations
 tags:
 - name: users
-  description: ユーザに関するAPI
+  description: 用户相关API
 - name: tickets
-  description: チケットに関するAPI
+  description: 票务相关API
 
 # Global MIME type
 consumes:
@@ -38,10 +38,10 @@ paths:
     get:
       tags:
       - users
-      summary: 全てのユーザの情報を取得
+      summary: 获取全部用户信息
       operationId: getUsers
       description: |
-        全てのユーザの情報を取得
+        获取全部用户信息
       responses:
         200:
           description: successful operation
@@ -53,13 +53,13 @@ paths:
     post:
       tags:
       - users
-      summary: ユーザを新規作成
+      summary: 新增用户
       operationId: addUser
-      description: ユーザを新規作成
+      description: 新增用户
       parameters:
       - in: body
         name: body
-        description: ユーザ情報
+        description: 用户信息
         required: true
         schema:
           type: object
@@ -82,14 +82,14 @@ paths:
     get:
       tags:
       - users
-      summary: 特定のユーザの情報を取得
+      summary: 获取指定用户
       operationId: getUserById
       description: |
-        特定のユーザの情報を取得
+        获取指定用户
       parameters:
       - in: path
         name: user_id
-        description: ユーザのID
+        description: 用户ID
         required: true
         type: integer
       responses:
@@ -102,10 +102,10 @@ paths:
     get:
       tags:
       - users
-      summary: 特定のユーザが持っているチケットの情報を取得
+      summary: 获取指定用户所持有的票务信息
       operationId: getTicketsByUserId
       description: |
-        特定のユーザが持っているチケットの情報を取得
+        获取指定用户所持有的票务信息
       parameters:
       - in: path
         name: user_id
@@ -124,10 +124,10 @@ paths:
     post:
       tags:
       - users
-      summary: チケットの受け渡し
+      summary: 票务转让
       operationId: transferTicket
       description: |
-        チケットの受け渡し
+        票务转让
       parameters:
       - in: path
         name: user_id
@@ -136,7 +136,7 @@ paths:
         type: integer
       - in: body
         name: body
-        description: 受け渡すチケット
+        description: 转让票信息
         required: true
         schema:
           type: object
@@ -163,10 +163,10 @@ paths:
     get:
       tags:
       - tickets
-      summary: 全てのチケットの情報を取得
+      summary: 获取全部票务信息
       operationId: getTickets
       description: |
-        全てのチケットの情報を取得
+        获取全部票务信息
       responses:
         200:
           description: successful operation
@@ -178,10 +178,10 @@ paths:
     post:
       tags:
       - tickets
-      summary: チケットを新規作成
+      summary: 新增票务信息
       operationId: addTicket
       description: |
-        チケットを新規作成
+        新增票务信息
       parameters:
       - in: body
         name: body
@@ -208,10 +208,10 @@ paths:
     get:
       tags:
       - tickets
-      summary: 特定のチケットの情報を取得
+      summary: 获取指定票务信息
       operationId: getTicketById
       description: |
-        特定のチケットの情報を取得
+        获取指定票务信息
       parameters:
       - in: path
         name: ticket_id
@@ -227,12 +227,12 @@ paths:
     delete:
       tags:
       - tickets
-      summary: チケットを削除
+      summary: 删除票务
       operationId: deleteTicket
       parameters:
       - in: path
         name: ticket_id
-        description: チケットのID
+        description: 票务ID
         required: true
         type: integer
       responses:
@@ -245,14 +245,14 @@ paths:
     get:
       tags:
       - tickets
-      summary: 特定のチケットの履歴情報を取得
+      summary: 获取指定票的转让历史信息
       operationId: getHistoryByTicketId
       description: |
-        特定のチケットの履歴情報を取得
+        获取指定票的转让历史信息
       parameters:
       - in: path
         name: ticket_id
-        description: チケットのID
+        description: 票务ID
         required: true
         type: integer
       responses:
