@@ -16,6 +16,8 @@
     - [6.1 Dynamic Content](#61-dynamic-content)
     - [6.2 高可信度服务三个要点](#62-高可信度服务三个要点)
     - [6.3 Load Balance中常用指令](#63-load-balance中常用指令)
+  - [Other](#other)
+    - [关于设置的重载(Configuration Override Rule)](#关于设置的重载configuration-override-rule)
   - [7. Reference](#7-reference)
 
 ## 1. Nginx默认文件目录
@@ -131,6 +133,12 @@ location / {
 * $proxy_add_x_forwarded_for:   
   该request被转发的过的主机的列表。通过逗号分隔。  
   request header中X-Forwarded-For的值，若此值为空则使用\$remote_addr
+
+## Other
+### 关于设置的重载(Configuration Override Rule)
+* 最内侧的Context的设置会覆盖外侧。
+* 同级的设置只有第一个会生效  
+  ![nginx config的重载规则](./assets/img/nginx-config.png)
 
 ## 7. Reference
 * Nginx: From  Beginner to Pro
