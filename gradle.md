@@ -5,6 +5,7 @@
     - [1.2 Task](#12-task)
     - [1.3 Build Lifecycle](#13-build-lifecycle)
   - [2. Plugin](#2-plugin)
+    - [Extension](#extension)
   - [3. Dependency](#3-dependency)
   - [4. Multi-Project Build](#4-multi-project-build)
   - [5. Continuous Integration](#5-continuous-integration)
@@ -48,6 +49,39 @@ Gradle的build生命周期分为3个阶段：
 
 ## 2. Plugin
 在Gradle中，Plugin是指可重用的build, task configuration的逻辑。
+### Extension
+Plugin一般都会有extension，该extension用于自定义plugin。  
+例如：
+```
+open class GreetingPluginExtension {
+    var message: String? = null
+    var greeter: String? = null
+}
+
+class GreetingPlugin : Plugin<Project> {
+    override fun apply(project: Project) {
+        val extension = project.extensions.create<GreetingPluginExtension>("greeting")
+        project.task("hello") {
+            doLast {
+                println("${extension.message} from ${extension.greeter}")
+            }
+        }
+    }
+}
+
+apply<GreetingPlugin>()
+
+// Configure the extension using a DSL block
+configure<GreetingPluginExtension> {
+    message = "Hi"
+    greeter = "Gradle"
+}
+```
+使用以上的plugin中的hello task可以生成以下输出：
+```
+> gradle -q hello
+Hi from Gradle
+```
 
 ## 3. Dependency
 * Internal repository manager: 中介于远程数据仓库，和内部网络的一个依赖管理工具。  
