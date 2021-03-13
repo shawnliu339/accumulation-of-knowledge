@@ -3,7 +3,8 @@
 ![Elastic stack的架构图](./assets/img/elastic-stack.png)
 * Logstash  
   logstash是data pipline，简单来说是将一处的input数据进行一系列的处理，然后，output到另一处。  
-  可以想一下insight的后端实现，也可被称之为insight pipline。因为，该功能基本是将IU处统计的数据转存到自己服务器的Hbase中。
+  可以想一下insight的后端实现，也可被称之为insight pipline。因为，该功能基本是将公司数据平台统计的数据，经过需要的加工，转存到自己服务器的Hbase中。  
+  另外，datachain也是pipline，同样是将个个应用传来的数据，进行各种处理后存储到数据平台。
 * Beat是data shipper，就是实现一个功能，将服务器上的数据传输给logstash或者elastic search。  
   例如：filebeat可以用于监控服务器上的Apache access log文件，一旦文件发生任何变化，beat就会将数据传输给logstash或者elastic search。  
   分布式的系统，往往一个应用的日志文件会散落在不同的服务上，filebeat可以将这些分散的文件变化发送到libbeat，libbeat会将它们整合后再次发给其他服务。
