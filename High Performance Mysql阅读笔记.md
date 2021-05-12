@@ -1,3 +1,4 @@
+# High Performance Mysql读后感 
 - [High Performance Mysql读后感](#high-performance-mysql读后感)
   - [1. Mysql Architecture](#1-mysql-architecture)
     - [Table locks](#table-locks)
@@ -27,7 +28,7 @@
     - [Replication基本架构](#replication基本架构)
     - [使用场景](#使用场景)
   - [11-16本次不看](#11-16本次不看)
-# High Performance Mysql读后感
+
 ## 1. Mysql Architecture
 ![mysql架构](./assets/img/mysql-architecture.png)
 mysql与大多数web service一样，共分为三层：  

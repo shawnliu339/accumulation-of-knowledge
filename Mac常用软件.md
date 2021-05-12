@@ -4,3 +4,4 @@
 3. 搜狗输入法，谷歌日文输入法
 4. 有道词典
 5. sequel pro
+6. QLMarkdown: 用于快速浏览md文件。https://github.com/toland/qlmarkdown
