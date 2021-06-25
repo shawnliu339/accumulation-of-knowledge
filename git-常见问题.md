@@ -1,4 +1,22 @@
-1. 查看gitconfig设置
+# Git 常见问题
+- [Git 常见问题](#git-常见问题)
+  - [添加upstream，追加fork项目的原始地址](#添加upstream追加fork项目的原始地址)
+  - [git add无法正常显示中文文件名](#git-add无法正常显示中文文件名)
+  - [查看gitconfig设置](#查看gitconfig设置)
+  - [修改上条提交的author](#修改上条提交的author)
+  - [通过shell脚本修改所有过去提交中的author信息。](#通过shell脚本修改所有过去提交中的author信息)
+
+## 添加upstream，追加fork项目的原始地址
+```
+git remote add upstream <url>
+```
+
+## git add无法正常显示中文文件名
+```
+git config –global core.quotepath false
+```
+
+## 查看gitconfig设置
 ```
 // 设置全局
 git config --global user.name "Author Name"
@@ -14,12 +32,12 @@ git config --get user.name
 // 查看所有设置
 git config -l
 ```
-2. 修改上条提交的author
+## 修改上条提交的author
 ```
 git commit --amend --author="NewAuthor <NewEmail@address.com>"
 ```
 
-3. 通过shell脚本修改所有过去提交中的author信息。
+## 通过shell脚本修改所有过去提交中的author信息。
 ```
 #!/bin/sh
 

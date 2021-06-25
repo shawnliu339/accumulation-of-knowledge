@@ -27,6 +27,20 @@
 * peco 
 * cdr 
 
+### Install plugin
+1. Install plugins
+```
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+
+git clone https://github.com/zsh-users/zsh-completions ~/.oh-my-zsh/custom/plugins/zsh-completions
+
+git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+```
+2. Added to ~/.zshrc
+```
+plugins=(git zsh-syntax-highlighting zsh-completions zsh-autosuggestions)
+```
+
 ### peco
 交互式过滤工具。
 ```
@@ -53,6 +67,36 @@ zle -N peco-history-selection
 bindkey '^r' peco-history-selection
 ```
 
+### cdr
+1. 首先创建文件夹
+```
+mkdir -p $HOME/.cache/shell/
+```
+2.  vim ~/.zshrc 在最后加入
+```
+# cdr, add-zsh-hook を有効にする
+autoload -Uz chpwd_recent_dirs cdr add-zsh-hook
+add-zsh-hook chpwd chpwd_recent_dirs
+
+# cdr の設定
+zstyle ':completion:*' recent-dirs-insert both
+zstyle ':chpwd:*' recent-dirs-max 500
+zstyle ':chpwd:*' recent-dirs-default true
+zstyle ':chpwd:*' recent-dirs-file "$HOME/.cache/shell/chpwd-recent-dirs"
+zstyle ':chpwd:*' recent-dirs-pushd true
+
+function peco-cdr() {
+    local selected_dir=$(cdr -l | awk '{ print $2 }' | peco)
+    if [ -n "$selected_dir" ]; then
+        BUFFER="cd ${selected_dir}"
+        zle accept-line
+    fi
+    zle clear-screen
+}
+zle -N peco-cdr
+bindkey '^e' peco-cdr
+```
+3. source ~/.zshrc
 
 ## Reference
 
