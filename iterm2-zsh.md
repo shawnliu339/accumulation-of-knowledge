@@ -94,7 +94,7 @@ function peco-cdr() {
     zle clear-screen
 }
 zle -N peco-cdr
-bindkey '^e' peco-cdr
+bindkey '^q' peco-cdr
 ```
 3. source ~/.zshrc
 
