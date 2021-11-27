@@ -52,7 +52,7 @@ partition可以有replica。
 
 ## Consumer
 一个consumer可以消费多个partition，  
-但是，不同的consumer不可以消费同一个partition。
+但是，一个consumer group内的不同的consumer不可以消费同一个partition。
 
 ### Consumer Group
 ![consumer-group](/assets/img/kafka-consumer-group.png)
