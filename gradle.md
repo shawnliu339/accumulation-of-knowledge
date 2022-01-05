@@ -6,6 +6,7 @@
     - [1.3 Build Lifecycle](#13-build-lifecycle)
   - [2. Plugin](#2-plugin)
     - [Extension](#extension)
+    - [工作中遇见的Best Practice](#工作中遇见的best-practice)
   - [3. Dependency](#3-dependency)
   - [4. Multi-Project Build](#4-multi-project-build)
   - [5. Continuous Integration](#5-continuous-integration)
@@ -82,6 +83,9 @@ configure<GreetingPluginExtension> {
 > gradle -q hello
 Hi from Gradle
 ```
+
+### 工作中遇见的Best Practice
+将project的dependency做成report输出。每次dependency发生变化的时候，CI强制要求更新该文件。这样可以第一时间知道dependency的变化。放生冲突或者不需要的dependency的时候，可以及时exclude掉。
 
 ## 3. Dependency
 * Internal repository manager: 中介于远程数据仓库，和内部网络的一个依赖管理工具。  
