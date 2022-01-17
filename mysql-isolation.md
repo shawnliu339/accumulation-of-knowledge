@@ -87,7 +87,10 @@ Mysql通过行锁解决这个问题，被select的范围和记录都会被锁定
 
 ### 小结：
 个人认为，隔离级别除了网上常说的读的区别外，在 locking read ， update 和 delete 上也有明显的区别。  
-最明显的就是 read comitted 只加 record-index lock，而不加 next-key lock 。因此，如果选择一个范围的数据进行操作的时候， read commited 只会上锁搜索到的结果。但是， repeatable read 会对整个范围的数据都上锁，即使，是该范围内还不存在的数据，也会通过给他们的index上锁，以保证未来不会被插入。
+最明显的就是 read comitted 只加 record-index lock，而不加 next-key lock 。因此，如果选择一个范围的数据进行操作的时候， read commited 只会上锁搜索到的结果。但是， repeatable read 会对整个范围的数据都上锁，即使，是该范围内还不存在的数据，也会通过给他们的index上锁(gap lock)，以保证未来不会被插入。  
+
+以上的锁问题，在实际开发中也会出现，例如，多个transaction同时写入大量数据的时候，容易出现死锁或者写入失败等问题。  
+因此，多事务大量写入的系统不适合使用repeatable read级别。
 
 ## 2. 阅读官方文档后的摘要：
 阅读官方文档后，发现一些概念可以帮助更加透彻的理解MySQL的事务隔离级别。因此，摘录在下：
