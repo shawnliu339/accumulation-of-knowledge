@@ -1,5 +1,10 @@
 - [MySQL Isolation](#mysql-isolation)
   - [1. 关于四种事务隔离级别的介绍：](#1-关于四种事务隔离级别的介绍)
+    - [0. 幻读的正确定义：](#0-幻读的正确定义)
+    - [1. READ COMMITTED:](#1-read-committed)
+    - [2. REPEATABLE READ:](#2-repeatable-read)
+    - [3. SERIALIZABLE:](#3-serializable)
+    - [小结：](#小结)
   - [2. 阅读官方文档后的摘要：](#2-阅读官方文档后的摘要)
     - [consistent read模式：](#consistent-read模式)
     - [MVCC(multiversion concurrency control)](#mvccmultiversion-concurrency-control)
@@ -11,40 +16,76 @@
 Ref：https://developer.ibm.com/zh/technologies/databases/articles/os-mysql-transaction-isolation-levels-and-locks/  
 但是，要注意上述网址中关于幻读的解释是不正确的。
 
-幻读是指两个进程，进程A读取一个范围的数据后，进程B在进程A所取范围内insert了一条数据，这时候进程A再次读取该范围的时候，会出现本来不该出现的数据。
+### 0. 幻读的正确定义：  
+假设表中有id=1，id=3的数据。  
+a. 开启两个事务，事务1和事务2。  
+b. 事务1中使用select查询id在1 ~ 3之间的结果，这时会出id为1和3的结果。(where id between 1 and 3)  
+c. 事务2中将id=2插入到表中，并提交。  
+d. 事务1再次通过select查询id为1 ~ 3的结果，这时仍只出现id为1和3的结果。  
+e. 因此，事务1认为可以插入id为2的数据。  
+f. 事务1插入id为2的数据，报错。  
 
-网上多数说MySQL InnoDB的READ COMMITTED会出现幻读。REPEATABLE READ由于MVCC（文章后面有解释）的控制，所以不会出现幻读。但是，实质上是错误的，后面会说明。  
+这种事务1中查询不到实际存在的行的情况被称为幻读。  
+该实际存在但是无法被搜索到的行称为幻行(Phantom Rows)。  
+https://dev.mysql.com/doc/refman/8.0/en/innodb-next-key-locking.html。
 
-1. READ COMMITTED  
-   * 会出现不可重复读(non-repeatable read)：  
+网上多数说MySQL InnoDB的READ COMMITTED会出现幻读。REPEATABLE READ由于MVCC（文章后面有解释）的控制，所以不会出现幻读。**但是，实质上是错误的，** 只有select for update或者select for share的加锁情况，repeatable read才可以避免幻读。接下来介绍3种常用级别的同时，也会解释具体原因。
+
+### 1. READ COMMITTED:  
+ * 会出现不可重复读(non-repeatable read)：  
+ a. 开启两个事务。事务1和事务2。  
+ b. 事务1读取表中所有数据。  
+ c. 事务2向表中插入数据并提交。  
+ d. 事务1再次读取表中数据，这时和b会不同。  
+ 解释见[consistent read模式](#consistent-read模式)
+
+ * 会出现幻读(Phantom Read):  
+ 假设表中有id=1，id=3的数据。  
+ a. 开启两个事务。事务1和事务2.  
+ b. 事务1中使用select查询id在1 ~ 3之间的结果。这时会出id为1和3的结果。  
+ c. 事务2中将id=2插入到表中，并提交。  
+ d. 事务1再次通过select查询id为1 ~ 3的结果，无发查到id=2的行。
+
+read committed level没有避免不可重复度和幻读的方法。
+
+
+### 2. REPEATABLE READ:  
+* **不会出现**不可重复读(non-repeatable read)：  
    a. 开启两个事务。事务1和事务2。  
    b. 事务1读取表中所有数据。  
    c. 事务2向表中插入数据并提交。  
-   d. 事务1再次读取表中数据，这时和b会不同。
-   * 会出现幻读(Phantom Read):  
+   d. 事务1再次读取表中数据，与b中得到结果相同。  
+
+* 会出现幻读(Phantom Read):  
    假设表中有id=1，id=3的数据。  
    a. 开启两个事务。事务1和事务2.  
-   b. 事务1中使用select for update(或者: for share)查询id在1 ~ 3之间的结果。这时会出id为1和3的结果。  
+   b. 事务1中使用select查询id在1 ~ 3之间的结果。这时会出id为1和3的结果。  
    c. 事务2中将id=2插入到表中，并提交。  
-   d. 事务1再次通过select查询id为1 ~ 3的结果，这时候出现id=2的结果。
+   d. 事务1再次通过select查询id为1 ~ 3的结果，无发查到id=2的行。
 
-   明明对select加了锁，但是，仍旧出现了幻读。这是由于 read commited 级别的隔离不会为 for update 和 for share 自动加 next-key lock 。  
-   因此，select查询id为1到3的结果时，只有存在数据的id1和3会加锁。但是，还不存在的id2不会加锁。因此，另一个事务可以插入id为2的数据，造成幻读。  
-   而 repeatable read 级别会自动对 for update 和 for share 自动加上 next-key lock 。因此，id为2的不存在数据，也在之后不可被插入，因此，不会出现幻读。
-   > A next-key lock is an index-record lock plus a gap lock on the gap preceding the index record.
+官方文档上写明，repeatable read不能防止幻读。  
+repeatable read不可防止幻读:  
+https://dev.mysql.com/doc/refman/8.0/en/glossary.html#glos_repeatable_read  
+幻读的说明处也写明repeatable read不可防止幻读:  
+https://dev.mysql.com/doc/refman/8.0/en/glossary.html#glos_phantom  
 
-2. REPEATABLE READ  
-   官方文档上写明，repeatable read不能防止幻读。  
-   repeatable read不可防止幻读:  
-   https://dev.mysql.com/doc/refman/8.0/en/glossary.html#glos_repeatable_read  
-   幻读的说明处也写明repeatable read不可防止幻读:  
-   https://dev.mysql.com/doc/refman/8.0/en/glossary.html#glos_phantom  
-   我只能理解为，幻读不是select中不出现就可以，而是，也不可以真正的被插入到表中。因为，该行在官方文档中称为幻行(Phantom Rows):  
-   https://dev.mysql.com/doc/refman/8.0/en/innodb-next-key-locking.html
+repeatabe read中避免幻读的方法：  
+为select语句添加for update和for share。  
+repeatable read级别的隔离会为 for update 和 for share 自动加 next-key lock 。  
+
+> A next-key lock is an index-record lock plus a gap lock on the gap preceding the index record.
+
+事务1中select查询id为1到3的结果时，还不存在的id2也会被加锁。  
+因此，另一个事务2不可以插入id为2的数据，需等待事务1中的锁被释放。  
+通过该方法，repeatable read级别可以避免幻读的出现。
+
+注意，read committed级别无法通过该方法避免幻读。  
+因为，read committed级别不会自动为for update和for share添加next-key lock。
    
-3. SERIALIZABLE
-   Mysql通过行锁解决这个问题，被select的范围和记录都会被锁定，因此，即使是select也会给行加锁，若要对加了读取锁的行进行修改，必须要等待读取锁释放。同一行的读取锁不会相冲突，可以读取。
+### 3. SERIALIZABLE:
+Mysql通过行锁解决这个问题，被select的范围和记录都会被锁定，因此，即使是select也会给行加锁，若要对加了读取锁的行进行修改，必须要等待读取锁释放。同一行的读取锁不会相冲突，可以读取。
 
+### 小结：
 个人认为，隔离级别除了网上常说的读的区别外，在 locking read ， update 和 delete 上也有明显的区别。  
 最明显的就是 read comitted 只加 record-index lock，而不加 next-key lock 。因此，如果选择一个范围的数据进行操作的时候， read commited 只会上锁搜索到的结果。但是， repeatable read 会对整个范围的数据都上锁，即使，是该范围内还不存在的数据，也会通过给他们的index上锁，以保证未来不会被插入。
 
