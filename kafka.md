@@ -6,6 +6,8 @@
     - [Consumer Group](#consumer-group)
     - [Consumer Offset](#consumer-offset)
   - [工作中遇到的问题](#工作中遇到的问题)
+    - [1. 去重](#1-去重)
+    - [2. Reset consumer group offset](#2-reset-consumer-group-offset)
   - [Reference](#reference)
 
 ## Broker
@@ -56,7 +58,7 @@ partition可以有replica。
 
 ### Consumer Group
 ![consumer-group](/assets/img/kafka-consumer-group.png)
-用于给consumer分组。  
+用于给consumer分组，保证同一组consumer不会重复消费同一个partition(相同的数据)。  
 注意，一个group中的consumer不可以超过partition的数量。  
 (因为，多个consumer不能消费同一个partition，因此，consumer超过了partition的数量，多出的consumer也无法工作。)  
 
@@ -65,6 +67,7 @@ partition可以有replica。
 因此，已经被消费的event不会被其他的consumer再次消费。
 
 ## 工作中遇到的问题
+### 1. 去重
 通过decaton去重的时候，为什么需要给event赋予event key。
 
 在工作中遇到这样的问题，从一个topic消费用户的id(id可重复)，然后，通过该id去另一台服务器获取用户信息，并将该信息存入数据库。  
@@ -92,6 +95,22 @@ decaton提供了去重的compaction功能，该功能很简单，就是consumer�
 ```
 那么，当consumer进行消费时，不同的consumer(一般在不同的服务器的不同线程上)一定不会消费到同一个用户id，因此，至少可以避免，由于不同consumer出现的重复id。  
 之后，同一个consumer在等待几秒后，很有可能会消费到相同的id，这时就可以通过decaton的compaction功能对其进行去重，这样在向另一台服务器请求信息时，一个id只需要一次。
+
+### 2. Reset consumer group offset
+由于Storage服务器宕机，大量消费了的数据并没有成功存入storage，而是被直接丢弃。  
+这时需要将offset重置到storage服务器宕机前的位置，重新消费这些数据。  
+可以参考以下链接对group offset进行重置。  
+https://gist.github.com/marwei/cd40657c481f94ebe273ecc16601674b
+
+以下为例子，to-datetime是UTC时间。
+```
+kafka-consumer-groups \
+  --bootstrap-server $BOOTSTRAP_SERVERS \
+  --reset-offsets --to-datetime '2021-04-12T06:00:00.000' \
+  --group group-RELEASE \
+  --topic release_topic --dry-run
+```
+
 
 ## Reference
 https://www.youtube.com/watch?v=lh_tjm0yPz4&list=PLt1SIbA8guusxiHz9bveV-UHs_biWFegU&index=6
