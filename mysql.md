@@ -22,6 +22,14 @@ MyISAM是常见的NTST table。
 * Null is undefined，所以，Null不等于Null，所以，unique index可以存多个Null值
 
 ## The Query Optimizer
+explain用于查询query的性能。  
+optimization的详细显示方法：  
+```
+SET optimizer_trace='enabled=on';
+explain query;
+SELECT * FROM information_schema.OPTIMIZER_TRACE;
+```
+然后检查cost的使用时间，即可知道MySQL的优化细节。
 
 ## 关于MySQL的Cache
 由于现在的系统越来越注重高并发，因此，Mysql的cache功能已在5.7中被废除，并将在8.0中移除。
