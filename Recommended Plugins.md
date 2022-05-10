@@ -16,3 +16,4 @@
 6. QLMarkdown: 用于快速浏览md文件。https://github.com/toland/qlmarkdown
 7. xnip 截屏软件
 8. Rectangle 应用分屏软件
+9. clipy 复制粘贴履历
