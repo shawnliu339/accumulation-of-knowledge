@@ -28,3 +28,12 @@ curl \
 ```
 grep . 'kakyoin' -R
 ```
+8. csvq 使用sql语句对csv进行检索
+没有header，分割为tab，检索example文件中前十行
+```
+csvq -n -d '\t' 'select c1 from example limit 10
+```
+第一行为header，分割为tab，检索example文件中前十行
+```
+csvq -d '\t' 'select c1 from example limit 10
+```
