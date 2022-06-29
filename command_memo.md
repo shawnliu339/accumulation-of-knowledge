@@ -13,6 +13,10 @@ git push -u origin HEAD
 ```
 git worktree add ../new_path <branch>
 ```
+4. 添加upstream，追加fork项目的原始地址
+```
+git remote add upstream <url>
+```
 
 # 其他
 1. terminal上显示剪贴板内容
