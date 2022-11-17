@@ -17,3 +17,8 @@
 7. xnip 截屏软件
 8. Rectangle 应用分屏软件
 9. clipy 复制粘贴履历
+
+# Chrome常用插件
+1. Vimium: 让Chrome有和Vim一样的快捷键。https://chrome.google.com/webstore/detail/vimium/dbepggeogbaibhgnhhndojpepiihcmeb
+2. Better Pull Request for GitHub: github的PR辅助插件。https://chrome.google.com/webstore/detail/better-pull-request-for-g/nfhdjopbhlggibjlimhdbogflgmbiahc
+3. Site Engine: 进入Chrome的设定画面，在Search engine处的Site search处设置
