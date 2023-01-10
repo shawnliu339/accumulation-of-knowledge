@@ -53,3 +53,10 @@ csvq -n -d '\t' 'select c1 from example limit 10
 ```
 csvq -d '\t' 'select c1 from example limit 10
 ```
+7. make https://www.ruanyifeng.com/blog/2015/02/make.html
+
+8. chmod 777
+三个数字分别为给owner(文件拥有者), group(群组), other(其他用户)分别赋予可读可写可执行权限
+
+9.  
+

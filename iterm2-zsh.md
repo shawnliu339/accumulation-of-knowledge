@@ -18,7 +18,14 @@
     vim ~/.zshrc
     ```
 
-    added `source ~/.bash_profile` into config file.
+    added below command into config file.
+    ```
+    # Add bash command
+    source ~/.bash_profile
+
+    # Erase dup history
+    setopt histignorealldups
+    ```
     
 ## Recomand plugin
 * zsh-syntax-highlighting
