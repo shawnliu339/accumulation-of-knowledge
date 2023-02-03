@@ -1,6 +1,15 @@
-# ITerm 2 Instal and Setting
+- [ITerm 2 Install and Setting](#iterm-2-install-and-setting)
+  - [Install](#install)
+  - [Recomand plugin](#recomand-plugin)
+    - [Install plugin](#install-plugin)
+    - [peco](#peco)
+    - [cdr](#cdr)
+  - [常用指令](#常用指令)
+  - [Reference](#reference)
 
-## Instal
+# ITerm 2 Install and Setting
+
+## Install
 
 1. Download ITerm 2. <https://iterm2.com/downloads.html>
 
@@ -22,10 +31,21 @@
     ```
     # Add bash command
     source ~/.bash_profile
+    ```
 
+5. 设置指令检索去重
+    ```bash
+    vim ~/.zshrc
+    ```
+
+    added below command into config file.
+    ```
     # Erase dup history
     setopt histignorealldups
     ```
+
+6. 设置左移一个单词快捷键
+   iTerm2 -> Preferences -> Profiles -> Keys -> Key Mappings -> add new -> Action:Send Escape Sequence -> esc + b(向左) -> esc + f (向右)
     
 ## Recomand plugin
 * zsh-syntax-highlighting
@@ -104,6 +124,21 @@ zle -N peco-cdr
 bindkey '^q' peco-cdr
 ```
 3. source ~/.zshrc
+
+
+## 常用指令
+光标移动
+Ctrl + e　　　　移动到行尾(end)
+
+Ctrl + a　　　　移动到行首(ahead)
+
+Ctrl + 左/右　　向左/右移动一个单词
+
+删除
+Ctrl + w　　　　删除光标左边一个单词(word)
+
+Ctrl + u　　　　删除光标左边全部
+
 
 ## Reference
 
