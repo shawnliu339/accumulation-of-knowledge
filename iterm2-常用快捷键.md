@@ -13,12 +13,12 @@ Ctrl + e
 ```
 esc + b
 ```
-通过iterm key mapping后
+通过iterm key mapping后(参考[iterm2-zsh.md#Install#6](iterm2-zsh.md))
 ```
 option + 方向键
 ```
 
-4. 向后移动个单词
+1. 向后移动个单词
 ```
 esc + f
 ```
@@ -27,17 +27,17 @@ esc + f
 option + 方向键
 ```
 
-5. 删除到行首
+1. 删除到行首
 ```
 Ctrl + u
 ```
 
-6. 删除一个单词
+1. 删除一个单词
 ```
 Ctrl + w
 ```
 
-7. 撤销
+1. 撤销
 ```
 Ctrl + -
 ```
