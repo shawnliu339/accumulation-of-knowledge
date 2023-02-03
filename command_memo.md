@@ -34,9 +34,13 @@ jq
 3. curl
 ```
 curl \
+-X POST \
+-H 'Content-Type: application/json; charset=UTF-8' \
 -H 'X-CLIENT-API-KEY: xxxx' \
 -H 'X-User: xxxxx' \
 -H 'X-BTS: xxxxx' \
+-d '{
+}' \
 'url'
 ```
 4. git grep 检查git目录下的文件
@@ -58,5 +62,11 @@ csvq -d '\t' 'select c1 from example limit 10
 8. chmod 777
 三个数字分别为给owner(文件拥有者), group(群组), other(其他用户)分别赋予可读可写可执行权限
 
-9.  
+9. 查看本占用端口的pid
+```
+lsof -i tcp:8080
+```
+10. 
+
+
 
