@@ -42,9 +42,19 @@ kubectl exec -it -n <namespace> <pod> -- /bin/bash
 ```
 8. 复制k8s container上的文件
 ```
-kubectl cp namespace/pod_name:path dest
+kubectl cp namespace/pod_name:src dest
 ```
-9.  
+没有tar的情况
+```
+kubectl exec -n namespace pod_name -- cat src/file  > dest/file
+```
+9. 追加调试pod
+https://kubernetes.io/zh-cn/docs/tasks/debug/debug-application/debug-running-pod/#ephemeral-container-example
+```
+kubectl run test --image=image:tag --restart=Never -n namespace --command -- sleep 3600
+```
+
+10. 
 
 
 ## Reference

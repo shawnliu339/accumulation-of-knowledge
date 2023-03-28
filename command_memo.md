@@ -1,27 +1,3 @@
-# git
-1. 只加入已经加入git的文件
-```
-git add -u
-```
-2. 撤销head
-```
-git reset --hard HEAD
-```
-3. 省略set-upstream和branch名直接推送
-```
-git push -u origin HEAD
-```
-4. git新建worktree(类似于工作空间的概念）。
-每个工作空间共用branch，但是，相互独立，因此，在不同的工作空间中可以独立的修改不同的branch。
-而同一个工作空间若想同时修改不同的branch，则需要stash后checkout到其他branch上。
-```
-git worktree add ../new_path <branch>
-```
-5. 添加upstream，追加fork项目的原始地址
-```
-git remote add upstream <url>
-```
-
 # 其他
 1. terminal上显示剪贴板内容
 ```
@@ -34,9 +10,13 @@ jq
 3. curl
 ```
 curl \
+-X POST \
+-H 'Content-Type: application/json; charset=UTF-8' \
 -H 'X-CLIENT-API-KEY: xxxx' \
 -H 'X-User: xxxxx' \
 -H 'X-BTS: xxxxx' \
+-d '{
+}' \
 'url'
 ```
 4. git grep 检查git目录下的文件
@@ -58,5 +38,11 @@ csvq -d '\t' 'select c1 from example limit 10
 8. chmod 777
 三个数字分别为给owner(文件拥有者), group(群组), other(其他用户)分别赋予可读可写可执行权限
 
-9.  
+9. 查看本占用端口的pid
+```
+lsof -i tcp:8080
+```
+10. 
+
+
 
