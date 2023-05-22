@@ -68,6 +68,18 @@ git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-m
 plugins=(git zsh-syntax-highlighting zsh-completions zsh-autosuggestions)
 ```
 
+3. 启动kube-ps1显示k8s信息
+```
+    plugins=(
+        kube-ps1
+    )
+```
+直接修改candy theme的prompt
+```
+vim ~/.oh-my-zsh/themes/candy.zsh-theme
+PROMPT='$(kube_ps1)'$PROMPT
+```
+
 ### peco
 交互式过滤工具。
 ```
