@@ -2,8 +2,6 @@
   - [Install](#install)
   - [Recomand plugin](#recomand-plugin)
     - [Install plugin](#install-plugin)
-    - [peco](#peco)
-    - [cdr](#cdr)
   - [常用指令](#常用指令)
   - [Reference](#reference)
 
@@ -15,37 +13,36 @@
 
 2. Install homebrew in terminal
 
-    ```bash
-    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+3. install zsh.
+   ```
+   brew install zsh
+   ```
+
+4. install oh-my-zsh
+   ```
+   sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+   ```
+
+5. Install plugins
+    ```
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+
+    git clone https://github.com/zsh-users/zsh-completions ~/.oh-my-zsh/custom/plugins/zsh-completions
+
+    git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+
+    brew install peco
+
+    # cdr用目录
+    mkdir -p $HOME/.cache/shell/
     ```
 
-3. Follow reference to config zsh.
+6. 用本目录下的 `.zshrc` 覆盖 `~/.zshrc`
 
-4. Added original $PATH into zsh
-
-    ```bash
-    vim ~/.zshrc
-    ```
-
-    added below command into config file.
-    ```
-    # Add bash command
-    source ~/.bash_profile
-    ```
-
-5. 设置指令检索去重
-    ```bash
-    vim ~/.zshrc
-    ```
-
-    added below command into config file.
-    ```
-    # Erase dup history
-    setopt histignorealldups
-    ```
-
-6. 设置左移一个单词快捷键
+7. 设置左移一个单词快捷键
    iTerm2 -> Preferences -> Profiles -> Keys -> Key Mappings -> add new -> Action:Send Escape Sequence -> esc + b(向左) -> esc + f (向右)
+
+8. source ~/.zshrc
     
 ## Recomand plugin
 * zsh-syntax-highlighting
@@ -55,19 +52,6 @@
 * cdr 
 
 ### Install plugin
-1. Install plugins
-```
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
-
-git clone https://github.com/zsh-users/zsh-completions ~/.oh-my-zsh/custom/plugins/zsh-completions
-
-git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-```
-2. Added to ~/.zshrc
-```
-plugins=(git zsh-syntax-highlighting zsh-completions zsh-autosuggestions)
-```
-
 3. 启动kube-ps1显示k8s信息
 ```
     plugins=(
@@ -79,64 +63,6 @@ plugins=(git zsh-syntax-highlighting zsh-completions zsh-autosuggestions)
 vim ~/.oh-my-zsh/themes/candy.zsh-theme
 PROMPT='$(kube_ps1)'$PROMPT
 ```
-
-### peco
-交互式过滤工具。
-```
-brew install peco
-```
-vim ~/.zshrc 在最后加入
-```
-# ⌃ r で peco で history 検索
-function peco-history-selection() {
-    local tac
-    if which tac > /dev/null; then
-        tac="tac"
-    else
-        tac="tail -r"
-    fi
- 
-    BUFFER=$(\history -n 1 | \
-        eval $tac | \
-        peco --query "$LBUFFER")
-    CURSOR=$#BUFFER
-    zle clear-screen
-}
-zle -N peco-history-selection
-bindkey '^r' peco-history-selection
-```
-
-### cdr
-1. 首先创建文件夹
-```
-mkdir -p $HOME/.cache/shell/
-```
-2.  vim ~/.zshrc 在最后加入
-```
-# cdr, add-zsh-hook を有効にする
-autoload -Uz chpwd_recent_dirs cdr add-zsh-hook
-add-zsh-hook chpwd chpwd_recent_dirs
-
-# cdr の設定
-zstyle ':completion:*' recent-dirs-insert both
-zstyle ':chpwd:*' recent-dirs-max 500
-zstyle ':chpwd:*' recent-dirs-default true
-zstyle ':chpwd:*' recent-dirs-file "$HOME/.cache/shell/chpwd-recent-dirs"
-zstyle ':chpwd:*' recent-dirs-pushd true
-
-function peco-cdr() {
-    local selected_dir=$(cdr -l | awk '{ print $2 }' | peco)
-    if [ -n "$selected_dir" ]; then
-        BUFFER="cd ${selected_dir}"
-        zle accept-line
-    fi
-    zle clear-screen
-}
-zle -N peco-cdr
-bindkey '^q' peco-cdr
-```
-3. source ~/.zshrc
-
 
 ## 常用指令
 光标移动
