@@ -5,6 +5,7 @@
   - [查看gitconfig设置](#查看gitconfig设置)
   - [修改上条提交的author](#修改上条提交的author)
   - [通过shell脚本修改所有过去提交中的author信息。](#通过shell脚本修改所有过去提交中的author信息)
+  - [将access token写入.netrc以避免每次认证](#将access-token写入netrc以避免每次认证)
 
 ## 添加upstream，追加fork项目的原始地址
 ```
@@ -13,7 +14,7 @@ git remote add upstream <url>
 
 ## git add无法正常显示中文文件名
 ```
-git config –global core.quotepath false
+git config –-global core.quotepath false
 ```
 
 ## 查看gitconfig设置
@@ -64,4 +65,19 @@ export GIT_AUTHOR_EMAIL="$am"
 export GIT_COMMITTER_NAME="$cn"
 export GIT_COMMITTER_EMAIL="$cm"
 '
+```
+
+## 将access token写入.netrc以避免每次认证
+Create a PrivateAccessToken with SSO enabled and write the following in ~ / .netrc.
+1. Create .netrc file and change permission
+```
+touch ~/.netrc
+chmod 0600 ~/.netrc
+```
+
+2. Add the below content into the .netrc file.
+```
+machine github.comcd 
+  login <YOUR_EMAIL>
+  password <YOUR_ACCESS_TOKEN_FROM_GITHUB>
 ```
