@@ -1,7 +1,6 @@
 - [ITerm 2 Install and Setting](#iterm-2-install-and-setting)
   - [Install](#install)
   - [Recomand plugin](#recomand-plugin)
-    - [Install plugin](#install-plugin)
   - [常用指令](#常用指令)
   - [Reference](#reference)
 
@@ -35,9 +34,13 @@
 
     # cdr用目录
     mkdir -p $HOME/.cache/shell/
+
+    # 安装kube-ps1，并将brew提示的source和指令添加到下一步覆盖后的.zshrc文件的最后。
+    # 需要安装kubectl，kube-ps1依赖kubectl
+    brew install kube-ps1
     ```
 
-6. 用本目录下的 `.zshrc` 覆盖 `~/.zshrc`
+6. 用本目录下的 `zshrc` 覆盖 `~/.zshrc`。注意文件名要以.开头
 
 7. 设置左移一个单词快捷键
    iTerm2 -> Preferences -> Profiles -> Keys -> Key Mappings -> add new -> Action:Send Escape Sequence -> esc + b(向左) -> esc + f (向右)
@@ -50,19 +53,7 @@
 * zsh-autosuggestions
 * peco 
 * cdr 
-
-### Install plugin
-3. 启动kube-ps1显示k8s信息
-```
-    plugins=(
-        kube-ps1
-    )
-```
-直接修改candy theme的prompt
-```
-vim ~/.oh-my-zsh/themes/candy.zsh-theme
-PROMPT='$(kube_ps1)'$PROMPT
-```
+* kube-ps1
 
 ## 常用指令
 光标移动
