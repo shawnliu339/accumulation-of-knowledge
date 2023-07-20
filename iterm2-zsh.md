@@ -43,7 +43,7 @@
 6. 用本目录下的 `zshrc` 覆盖 `~/.zshrc`。注意文件名要以.开头
 
 7. 设置左移一个单词快捷键
-   iTerm2 -> Preferences -> Profiles -> Keys -> Key Mappings -> add new -> Action:Send Escape Sequence -> esc + b(向左) -> esc + f (向右)
+   iTerm2 -> Preferences -> Profiles -> Keys -> Key Mappings -> add new -> Action:Send Escape Sequence -> esc + b(option + 向左) -> esc + f (option + 向右)
 
 8. source ~/.zshrc
     
